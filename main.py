@@ -105,23 +105,33 @@ df_pn = df_pn.sort_values("country_and_name")
 
 
 
-# Display park selection
+# header
 st.markdown("<h1 style='text-align: center;'>Waiting times in European amusement parks</h1>", unsafe_allow_html=True)
 
+
 # Layout
-selected_park = st.selectbox("Select your park:", df_pn["country_and_name"])
+# Display park selection
+selected_park = st.selectbox("Select your park:", df_pn["country_and_name"], index=24)
 selected_park_id = df_pn[df_pn["country_and_name"] == selected_park]["id"].values[0]
 
 print(selected_park_id)
 
 
 # Show only open attractions
+
+
+
 only_open_rides = st.checkbox("Show only open attractions", on_change=changeState)
 
+
+col1, col2 = st.columns(2)
 # Refresh button with spinner for user-feedback. No more action needed as by default streamlit rerenders the whole app
-if st.button("Refresh waiting times"):
-    with st.spinner("Retrieving latest data..."):
-        time.sleep(1.5)
+with col1:
+    if st.button("Refresh waiting times"):
+        with st.spinner("Retrieving latest data..."):
+            time.sleep(1.5)
+with col2:
+    st.markdown("<div style='text-align:right'> <a href='https://queue-times.com/' >Powered by Queue-Times.com</a> </div>", unsafe_allow_html=True)
 
 
 # Create dataframe for waiting times 
@@ -146,9 +156,9 @@ else:
 
     
     if only_open_rides == True:
-        st.dataframe(df_wt[df_wt["Reported as open?"] == st.session_state["hide"]].set_index("Attraction name"), use_container_width=True)
+        st.dataframe(df_wt[df_wt["Reported as open?"] == st.session_state["hide"]], hide_index=True, use_container_width=True)
     else:
-        st.dataframe(df_wt.set_index("Attraction name"), use_container_width=True)
+        st.dataframe(df_wt, hide_index=True, use_container_width=True)
 
 
     # Creating a bit padding
@@ -205,7 +215,7 @@ else:
         y='Attraction name',
         color='Park area',
         orientation='h',
-        title="Attractions grouped by Park Area",
+        title="Attractions by Waiting Time grouped by Park Area",
         labels={
             'Attraction name': 'Attraction Name',
             'Waiting time (min)': 'Waiting Time (minutes)',
