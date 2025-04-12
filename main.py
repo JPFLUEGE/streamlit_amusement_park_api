@@ -5,6 +5,10 @@ import plotly.express as px
 import time
 
 
+def shortenAttraction(name):
+    if len(name) > 15: return name[0:10] + "..." + name[-6:]
+    else: return name
+
 # display last updated
 def time_difference_to_string(time_diff):
     seconds = time_diff.total_seconds()
@@ -114,22 +118,21 @@ st.markdown("<h1 style='text-align: center;'>Current Wait Times at European Amus
 selected_park = st.selectbox("Select your park:", df_pn["country_and_name"], index=24)
 selected_park_id = df_pn[df_pn["country_and_name"] == selected_park]["id"].values[0]
 
-print(selected_park_id)
+#print(selected_park_id)
 
 
 # Show only open attractions
-
-
-
 only_open_rides = st.checkbox("Show only open attractions", on_change=changeState)
 
 
+# Layout into two columns
 col1, col2 = st.columns(2)
 # Refresh button with spinner for user-feedback. No more action needed as by default streamlit rerenders the whole app
 with col1:
     if st.button("Refresh waiting times"):
         with st.spinner("Retrieving latest data..."):
             time.sleep(1.5)
+# API provider
 with col2:
     st.markdown("<div style='text-align:right'> <a href='https://queue-times.com/' >Powered by Queue-Times.com</a> </div>", unsafe_allow_html=True)
 
@@ -140,8 +143,8 @@ df_wt = pd.DataFrame(getWaitingTimesData(selected_park_id))
 # Data check and modifying dataframe of waiting times
 if len(df_wt.columns) < 1:
     st.write("At this time, no data is available.")
-
 else:
+    # Converting timestamp with timezone
     df_wt["last updated check"] = pd.to_datetime(df_wt["last_updated"], utc=True).dt.tz_convert('Europe/Berlin')#.dt.strftime('%Y-%m-%d %H:%M:%S')
     #df_wt["last_fetched"] = pd.Timestamp.now()
     df_wt["Last updated"] = pd.to_datetime('now').tz_localize('Europe/Berlin') - pd.to_datetime(df_wt["last_updated"], utc=True).dt.tz_convert('Europe/Berlin')#.dt.strftime('%Y-%m-%d %H:%M:%S')
@@ -161,10 +164,15 @@ else:
         st.dataframe(df_wt, hide_index=True, use_container_width=True)
 
 
-    # Creating a bit padding
+    # Creating a bit of padding
     st.markdown("<br>", unsafe_allow_html=True) 
 
-    # Sort the DataFrame
+
+    # shorten the attraction name to avoid weird responsivness
+    df_wt["Attraction name"] = df_wt["Attraction name"].apply(shortenAttraction)
+
+    # Creating plots
+    # #1
     df_sorted = df_wt[df_wt["Reported as open?"] == True].sort_values("Waiting time (min)", ascending=True)
 
     # Dynamically calculate height
@@ -177,6 +185,7 @@ else:
         x="Waiting time (min)",
         y="Attraction name",
         orientation='h',
+        text="Waiting time (min)",
         title="Attractions by Waiting Time",
         labels={
             "Attraction name": "Attraction Name",
@@ -191,18 +200,20 @@ else:
         yaxis_title=None,
         margin=dict(l=150)  
     )
+    fig.update_traces(textposition='inside', textangle=0) 
 
-    # Display in Streamlit
+    # Display plot
     st.plotly_chart(fig, use_container_width=True)
 
 
 
 
- 
+    # #2
     # Group by park area and sort each group by waiting time
     df_grouped = df_wt[df_wt["Reported as open?"] == True].groupby('Park area').apply(
         lambda x: x.sort_values('Waiting time (min)', ascending=True)
         ).reset_index(drop=True)
+    
 
     # Dynamically calculate chart height based on number of attractions
     num_attractions = df_grouped.shape[0]
@@ -215,6 +226,7 @@ else:
         y='Attraction name',
         color='Park area',
         orientation='h',
+        text="Waiting time (min)",
         title="Attractions by Waiting Time grouped by Park Area",
         labels={
             'Attraction name': 'Attraction Name',
@@ -229,8 +241,12 @@ else:
         height=chart_height,
         yaxis=dict(tickfont=dict(size=12)),
         yaxis_title=None,
-        margin=dict(l=160, r=20, t=60, b=40)  # More left margin for long labels
+        margin=dict(l=160, r=20, t=60, b=40),
+        autosize=True
     )
 
-    # Show the chart in Streamlit
+    # put datalabels outside and turn them 
+    fig2.update_traces(textposition='inside', textangle=0)
+    
+    # Show the plot
     st.plotly_chart(fig2, use_container_width=True)
