@@ -113,7 +113,7 @@ df_pn = df_pn.sort_values("country_and_name")
 # Header
 st.markdown("<h1 style='text-align: center; font-size:2rem'>Current Wait Times at <br> European Amusement Parks</h1>", unsafe_allow_html=True)
 st.markdown("<div style='text-align:center; font-size:0.8rem;'> <a style='color:black; text-decoration:none' href='https://queue-times.com/' >Powered by Queue-Times.com</a> </div>", unsafe_allow_html=True)
-st.markdown("<br>", unsafe_allow_html=True) 
+st.markdown("<br><br>", unsafe_allow_html=True) 
 
 
 
