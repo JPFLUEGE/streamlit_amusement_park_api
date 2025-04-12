@@ -111,6 +111,9 @@ df_pn = df_pn.sort_values("country_and_name")
 
 # header
 st.markdown("<h1 style='text-align: center;'>Current Wait Times at European Amusement Parks</h1>", unsafe_allow_html=True)
+st.markdown("<div style='text-align:center; font-size:0.8rem'> <a href='https://queue-times.com/' >Powered by Queue-Times.com</a> </div>", unsafe_allow_html=True)
+
+st.markdown("<br>", unsafe_allow_html=True) 
 
 
 # Layout
@@ -125,17 +128,25 @@ selected_park_id = df_pn[df_pn["country_and_name"] == selected_park]["id"].value
 only_open_rides = st.checkbox("Show only open attractions", on_change=changeState)
 
 
-# Layout into two columns
-col1, col2 = st.columns(2)
-# Refresh button with spinner for user-feedback. No more action needed as by default streamlit rerenders the whole app
-with col1:
-    if st.button("Refresh data"):
-        with st.spinner("Retrieving latest data..."):
-            time.sleep(1.5)
-# API provider
-with col2:
-    st.markdown("<div style='text-align:right'> <a href='https://queue-times.com/' >Powered by <br> Queue-Times.com</a> </div>", unsafe_allow_html=True)
 
+# not mobile responsive enough
+
+# # Layout into two columns
+# col1, col2 = st.columns(2)
+
+# # Refresh button with spinner for user-feedback. No more action needed as by default streamlit rerenders the whole app
+# with col1:
+#     if st.button("Refresh data"):
+#         with st.spinner("Retrieving latest data..."):
+#             time.sleep(1.5)
+# # API provider
+# with col2:
+#     st.markdown("<div style='text-align:right'> <a href='https://queue-times.com/' >Powered by <br> Queue-Times.com</a> </div>", unsafe_allow_html=True)
+
+
+if st.button("Refresh waiting times"):
+    with st.spinner("Retrieving latest data..."):
+        time.sleep(1.5)
 
 # Create dataframe for waiting times 
 df_wt = pd.DataFrame(getWaitingTimesData(selected_park_id))
