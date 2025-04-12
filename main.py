@@ -237,7 +237,7 @@ else:
         legend=dict(
             #orientation="h",  # Horizontal layout for the legend
             #yanchor="bottom",  # Anchor legend to the bottom
-            #y=1,  # Position the legend further below the chart (increased value to create space)
+            y=.5,  # Position the legend further below the chart (increased value to create space)
             #xanchor="left",  # Center the legend
             #x=0,  # Center the legend horizontally
             #font=dict(size=12),  # Set the font size for the legend
