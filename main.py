@@ -168,9 +168,9 @@ else:
     # fig #1
     df_sorted = df_wt[df_wt["Reported as open?"] == True].sort_values("Waiting time (min)", ascending=True)
 
-    # Dynamically calculate height
+    # Dynamically calculate height (max() to avoid breaking if 0 attractions)
     num_attractions = df_sorted.shape[0]
-    chart_height = num_attractions * 40
+    chart_height = max(10, num_attractions * 40)
 
     # Create horizontal bar chart
     fig = px.bar(
@@ -209,8 +209,6 @@ else:
         ).reset_index(drop=True)
     
 
-    # Dynamically calculate chart height based on number of attractions
-    num_attractions = df_grouped.shape[0]
 
     # Create grouped bar chart
     fig2 = px.bar(
