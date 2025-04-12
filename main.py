@@ -106,7 +106,7 @@ df_pn = df_pn.sort_values("country_and_name")
 
 
 # header
-st.markdown("<h1 style='text-align: center;'>Waiting times in European amusement parks</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center;'>Current Wait Times at European Amusement Parks</h1>", unsafe_allow_html=True)
 
 
 # Layout
