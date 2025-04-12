@@ -237,7 +237,7 @@ else:
         legend=dict(
             #orientation="h",  # Horizontal layout for the legend
             #yanchor="bottom",  # Anchor legend to the bottom
-            y=.5,  # Position the legend further below the chart (increased value to create space)
+            y=.8,  # Position the legend further below the chart (increased value to create space)
             #xanchor="left",  # Center the legend
             #x=0,  # Center the legend horizontally
             #font=dict(size=12),  # Set the font size for the legend
@@ -255,8 +255,8 @@ else:
 
 
 
-st.markdown("""
-            <div style='text-align:center; font-size:.6rem;padding-top:100px'> This app was created 
-                <a style='color:black; text-decoration:none' href='https://www.linkedin.com/in/julian-m-pflueger/' >by Julian</a> 
-            </div>
-            """, unsafe_allow_html=True)
+# st.markdown("""
+#             <div style='text-align:center; font-size:.6rem;padding-top:100px'> This app was created 
+#                 <a style='color:black; text-decoration:none' href='https://www.linkedin.com/in/julian-m-pflueger/' >by Julian</a> 
+#             </div>
+#             """, unsafe_allow_html=True)
