@@ -156,6 +156,7 @@ else:
             .sort_values(["Waiting time (min)", "Reported as open?", "Attraction name"], ascending=[False, False, True])
             [["Attraction name", "Waiting time (min)", "Reported as open?", "Park area", "Last data update by park"]]
     )
+    df_wt["Attraction name"] = df_wt["Attraction name"].apply(shortenAttraction)
 
     
     if only_open_rides == True:
