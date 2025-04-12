@@ -113,7 +113,7 @@ df_pn = df_pn.sort_values("country_and_name")
 # Header
 st.markdown("<h1 style='text-align: center; font-size:2rem'>Current Wait Times at <br> European Amusement Parks</h1>", unsafe_allow_html=True)
 st.markdown("<div style='text-align:center; font-size:0.8rem;'> <a style='color:black; text-decoration:none' href='https://queue-times.com/' >Powered by Queue-Times.com</a> </div>", unsafe_allow_html=True)
-st.markdown("<br><br>", unsafe_allow_html=True) 
+st.markdown("<br>", unsafe_allow_html=True) 
 
 
 
@@ -126,6 +126,7 @@ selected_park_id = df_pn[df_pn["country_and_name"] == selected_park]["id"].value
 
 # Show only open attractions
 only_open_rides = st.checkbox("Show only open attractions", on_change=changeState)
+st.markdown("<br>", unsafe_allow_html=True) 
 
 # Data refresh button. streamlit automatically rerenders by clicking therefore no additional action needed
 if st.button("Refresh waiting times"):
