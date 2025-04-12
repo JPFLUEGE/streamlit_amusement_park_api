@@ -129,7 +129,7 @@ only_open_rides = st.checkbox("Show only open attractions", on_change=changeStat
 col1, col2 = st.columns(2)
 # Refresh button with spinner for user-feedback. No more action needed as by default streamlit rerenders the whole app
 with col1:
-    if st.button("Refresh waiting times"):
+    if st.button("Refresh data"):
         with st.spinner("Retrieving latest data..."):
             time.sleep(1.5)
 # API provider
