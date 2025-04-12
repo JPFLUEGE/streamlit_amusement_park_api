@@ -233,7 +233,17 @@ else:
         yaxis=dict(tickfont=dict(size=14)),
         yaxis_title=None,
         margin=dict(l=160, r=20, t=60, b=40),
-        autosize=True
+        autosize=True,
+        legend=dict(
+            #orientation="h",  # Horizontal layout for the legend
+            #yanchor="bottom",  # Anchor legend to the bottom
+            #y=1,  # Position the legend further below the chart (increased value to create space)
+            #xanchor="left",  # Center the legend
+            #x=0,  # Center the legend horizontally
+            #font=dict(size=12),  # Set the font size for the legend
+            #title=None,
+            bgcolor="rgba(255, 255, 255, 0.7)"  # Background color with transparency for better visibility
+        )
     )
 
     # put datalabels outside and turn them 
@@ -246,7 +256,7 @@ else:
 
 
 st.markdown("""
-            <div style='text-align:center; font-size:.8rem;padding-top:100px'> This app was created 
+            <div style='text-align:center; font-size:.6rem;padding-top:100px'> This app was created 
                 <a style='color:black; text-decoration:none' href='https://www.linkedin.com/in/julian-m-pflueger/' >by Julian</a> 
             </div>
             """, unsafe_allow_html=True)
