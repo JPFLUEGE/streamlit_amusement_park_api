@@ -134,7 +134,7 @@ with col1:
             time.sleep(1.5)
 # API provider
 with col2:
-    st.markdown("<div style='text-align:right'> <a href='https://queue-times.com/' >Powered by Queue-Times.com</a> </div>", unsafe_allow_html=True)
+    st.markdown("<div style='text-align:right'> <a href='https://queue-times.com/' >Powered by <br> Queue-Times.com</a> </div>", unsafe_allow_html=True)
 
 
 # Create dataframe for waiting times 
