@@ -170,7 +170,7 @@ else:
 
     # Dynamically calculate height (max() to avoid breaking if 0 attractions)
     num_attractions = df_sorted.shape[0]
-    chart_height = max(10, num_attractions * 40)
+    chart_height = max(100, num_attractions * 40)
 
     # Create horizontal bar chart
     fig = px.bar(
