@@ -138,7 +138,7 @@ df_wt = pd.DataFrame(getWaitingTimesData(selected_park_id))
 
 # Data check and modifying dataframe of waiting times
 if len(df_wt.columns) < 1:
-    st.write("At this time, no data is available.")
+    st.write("At this time, no data is available for:", selected_park)
 else:
     # Converting timestamp with timezone
     df_wt["last updated check"] = pd.to_datetime(df_wt["last_updated"], utc=True).dt.tz_convert('Europe/Berlin')#.dt.strftime('%Y-%m-%d %H:%M:%S')
