@@ -5,11 +5,12 @@ import plotly.express as px
 import time
 
 
+# shorten attraction names to better fit mobiles
 def shortenAttraction(name):
-    if len(name) > 15: return name[0:10] + "..." + name[-6:]
+    if len(name) > 17: return name[0:11] + "..." + name[-6:]
     else: return name
 
-# display last updated
+# display last updated value
 def time_difference_to_string(time_diff):
     seconds = time_diff.total_seconds()
 
@@ -60,7 +61,7 @@ def getParkData():
       }]
 
 
-#retrieving waiting time for selected park
+# retrieving waiting time for selected park
 def getWaitingTimesData(id):
     API_wait_times = f"https://queue-times.com/parks/{id}/queue_times.json"
 
@@ -109,14 +110,13 @@ df_pn = df_pn.sort_values("country_and_name")
 
 
 
-# header
-st.markdown("<h1 style='text-align: center;'>Current Wait Times at European Amusement Parks</h1>", unsafe_allow_html=True)
-st.markdown("<div style='text-align:center; font-size:0.8rem'> <a href='https://queue-times.com/' >Powered by Queue-Times.com</a> </div>", unsafe_allow_html=True)
-
+# Header
+st.markdown("<h1 style='text-align: center; font-size:2rem'>Current Wait Times at <br> European Amusement Parks</h1>", unsafe_allow_html=True)
+st.markdown("<div style='text-align:center; font-size:0.8rem;'> <a style='color:black; text-decoration:none' href='https://queue-times.com/' >Powered by Queue-Times.com</a> </div>", unsafe_allow_html=True)
 st.markdown("<br>", unsafe_allow_html=True) 
 
 
-# Layout
+
 # Display park selection
 selected_park = st.selectbox("Select your park:", df_pn["country_and_name"], index=24)
 selected_park_id = df_pn[df_pn["country_and_name"] == selected_park]["id"].values[0]
@@ -127,23 +127,7 @@ selected_park_id = df_pn[df_pn["country_and_name"] == selected_park]["id"].value
 # Show only open attractions
 only_open_rides = st.checkbox("Show only open attractions", on_change=changeState)
 
-
-
-# not mobile responsive enough
-
-# # Layout into two columns
-# col1, col2 = st.columns(2)
-
-# # Refresh button with spinner for user-feedback. No more action needed as by default streamlit rerenders the whole app
-# with col1:
-#     if st.button("Refresh data"):
-#         with st.spinner("Retrieving latest data..."):
-#             time.sleep(1.5)
-# # API provider
-# with col2:
-#     st.markdown("<div style='text-align:right'> <a href='https://queue-times.com/' >Powered by <br> Queue-Times.com</a> </div>", unsafe_allow_html=True)
-
-
+# Data refresh button. streamlit automatically rerenders by clicking therefore no additional action needed
 if st.button("Refresh waiting times"):
     with st.spinner("Retrieving latest data..."):
         time.sleep(1.5)
@@ -163,10 +147,10 @@ else:
     
     df_wt = (df_wt
             .rename(columns={"name": "Attraction name", "is_open": "Reported as open?", "wait_time": "Waiting time (min)"}).drop(columns=["id"])
-            #.set_index("Attraction name")
             .sort_values(["Waiting time (min)", "Reported as open?", "Attraction name"], ascending=[False, False, True])
             [["Attraction name", "Waiting time (min)", "Reported as open?", "Park area", "Last data update by park"]]
     )
+    # shorten attraction names to better fit mobiles
     df_wt["Attraction name"] = df_wt["Attraction name"].apply(shortenAttraction)
 
     
@@ -179,17 +163,13 @@ else:
     # Creating a bit of padding
     st.markdown("<br>", unsafe_allow_html=True) 
 
-
-    # shorten the attraction name to avoid weird responsivness
-    df_wt["Attraction name"] = df_wt["Attraction name"].apply(shortenAttraction)
-
     # Creating plots
-    # #1
+    # fig #1
     df_sorted = df_wt[df_wt["Reported as open?"] == True].sort_values("Waiting time (min)", ascending=True)
 
     # Dynamically calculate height
     num_attractions = df_sorted.shape[0]
-    chart_height = max(400, num_attractions * 30)
+    chart_height = num_attractions * 40
 
     # Create horizontal bar chart
     fig = px.bar(
@@ -205,12 +185,13 @@ else:
         }
     )
 
-    # Update layout with custom height
+    # Update layout 
     fig.update_layout(
         height=chart_height,
-        yaxis=dict(tickfont=dict(size=12)), 
+        yaxis=dict(tickfont=dict(size=14)),
         yaxis_title=None,
-        margin=dict(l=150)  
+        margin=dict(l=160, r=20, t=60, b=40),
+        autosize=True  
     )
     fig.update_traces(textposition='inside', textangle=0) 
 
@@ -220,7 +201,7 @@ else:
 
 
 
-    # #2
+    # fig #2
     # Group by park area and sort each group by waiting time
     df_grouped = df_wt[df_wt["Reported as open?"] == True].groupby('Park area').apply(
         lambda x: x.sort_values('Waiting time (min)', ascending=True)
@@ -229,9 +210,8 @@ else:
 
     # Dynamically calculate chart height based on number of attractions
     num_attractions = df_grouped.shape[0]
-    chart_height = max(500, num_attractions * 30)
 
-    # Create horizontal bar chart
+    # Create grouped bar chart
     fig2 = px.bar(
         df_grouped,
         x='Waiting time (min)',
@@ -248,10 +228,10 @@ else:
         color_discrete_sequence=px.colors.qualitative.Set1
     )
 
-    # Update layout for better readability
+    # Update layout
     fig2.update_layout(
         height=chart_height,
-        yaxis=dict(tickfont=dict(size=12)),
+        yaxis=dict(tickfont=dict(size=14)),
         yaxis_title=None,
         margin=dict(l=160, r=20, t=60, b=40),
         autosize=True
@@ -262,3 +242,12 @@ else:
     
     # Show the plot
     st.plotly_chart(fig2, use_container_width=True)
+
+
+
+
+st.markdown("""
+            <div style='text-align:center; font-size:.8rem;padding-top:100px'> This app was created 
+                <a style='color:black; text-decoration:none' href='https://www.linkedin.com/in/julian-m-pflueger/' >by Julian</a> 
+            </div>
+            """, unsafe_allow_html=True)
