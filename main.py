@@ -5,10 +5,6 @@ import plotly.express as px
 import time
 
 
-# shorten attraction names to better fit mobiles
-def shortenAttraction(name):
-    if len(name) > 17: return name[0:11] + "..." + name[-6:]
-    else: return name
 
 # display last updated value
 def time_difference_to_string(time_diff):
@@ -91,6 +87,10 @@ def getWaitingTimesData(id):
             "Park area": "n/a"
         }]
     
+# shorten attraction names to better fit mobiles
+def shortenAttraction(name):
+    if len(name) > 17: return name[0:11] + "..." + name[-6:]
+    else: return name
 
 # Button state 
 if "hide" not in st.session_state:
@@ -112,13 +112,13 @@ df_pn = df_pn.sort_values("country_and_name")
 
 # Header
 st.markdown("<h1 style='text-align: center; font-size:2rem'>Current Wait Times at <br> European Amusement Parks</h1>", unsafe_allow_html=True)
-st.markdown("<div style='text-align:center; font-size:0.8rem;'> <a style='color:black; text-decoration:none' href='https://queue-times.com/' >Powered by Queue-Times.com</a> </div>", unsafe_allow_html=True)
+st.markdown("<div style='text-align:center; font-size:0.7rem;'> <a style='color:black; text-decoration:none' href='https://queue-times.com/' >Powered by Queue-Times.com</a> </div>", unsafe_allow_html=True)
 st.markdown("<br>", unsafe_allow_html=True) 
 
 
 
 # Display park selection
-selected_park = st.selectbox("Select your park:", df_pn["country_and_name"], index=24)
+selected_park = st.selectbox("Select your park:", df_pn["country_and_name"], index=16)
 selected_park_id = df_pn[df_pn["country_and_name"] == selected_park]["id"].values[0]
 
 #print(selected_park_id)
@@ -251,8 +251,14 @@ else:
 
 
 
-# st.markdown("""
-#             <div style='text-align:center; font-size:.6rem;padding-top:100px'> This app was created 
-#                 <a style='color:black; text-decoration:none' href='https://www.linkedin.com/in/julian-m-pflueger/' >by Julian</a> 
-#             </div>
-#             """, unsafe_allow_html=True)
+st.markdown("""
+            <div style='text-align:center; font-size:.6rem;padding-top:100px'>
+                <a style='color:black; text-decoration:none;' href='https://www.linkedin.com/in/julian-m-pflueger/' >
+                    <img src="https://content.linkedin.com/content/dam/me/business/en-us/amp/brand-site/v2/bg/LI-Bug.svg.original.svg" alt="Linkedin Button" with="10px" height="10px">
+                    <br>
+                    Julian
+                </a> 
+             </div>
+            """, unsafe_allow_html=True)
+
+
