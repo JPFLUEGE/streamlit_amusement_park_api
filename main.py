@@ -237,14 +237,8 @@ else:
         margin=dict(l=160, r=20, t=60, b=40),
         autosize=True,
         legend=dict(
-            #orientation="h",  # Horizontal layout for the legend
-            #yanchor="bottom",  # Anchor legend to the bottom
-            y=.8,  # Position the legend further below the chart (increased value to create space)
-            #xanchor="left",  # Center the legend
-            #x=0,  # Center the legend horizontally
-            #font=dict(size=12),  # Set the font size for the legend
-            #title=None,
-            bgcolor="rgba(255, 255, 255, 0.7)"  # Background color with transparency for better visibility
+            font=dict(size=11),  #legend
+            bgcolor="rgba(255, 255, 255, 0.7)"  # Background color 
         )
     )
 
