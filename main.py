@@ -133,8 +133,10 @@ if st.button("Refresh waiting times"):
     with st.spinner("Retrieving latest data..."):
         time.sleep(1.5)
 
+
 # Create dataframe for waiting times 
 df_wt = pd.DataFrame(getWaitingTimesData(selected_park_id))
+
 
 # Data check and modifying dataframe of waiting times
 if len(df_wt.columns) < 1:
@@ -170,7 +172,7 @@ else:
 
     # Dynamically calculate height (max() to avoid breaking if 0 attractions)
     num_attractions = df_sorted.shape[0]
-    chart_height = max(100, num_attractions * 40)
+    chart_height = max(200, num_attractions * 40)
 
     # Create horizontal bar chart
     fig = px.bar(
