@@ -254,7 +254,7 @@ else:
 
 st.html(
     "<div style='text-align:center; font-size:.6rem; padding-top:100px'>"
-    "<a style='color:black; text-decoration:none;' href='https://www.linkedin.com/in/julian--pflueger/'>"
+    "<a style='color:black; text-decoration:none;' href='https://www.linkedin.com/in/julian--pflueger/' target='_blank' rel='noopener noreferrer'>"
     "<img src='https://content.linkedin.com/content/dam/me/business/en-us/amp/brand-site/v2/bg/LI-Bug.svg.original.svg' alt='LinkedIn' width='10' height='10'>"
     "<br>Julian</a></div>"
 )
