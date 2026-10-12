@@ -111,9 +111,9 @@ df_pn = df_pn.sort_values("country_and_name")
 
 
 # Header
-st.markdown("<h1 style='text-align: center; font-size:2rem'>Current Wait Times at <br> European Amusement Parks</h1>", unsafe_allow_html=True)
-st.markdown("<div style='text-align:center; font-size:0.7rem;'> <a style='color:black; text-decoration:none' href='https://queue-times.com/' >Powered by Queue-Times.com</a> </div>", unsafe_allow_html=True)
-st.markdown("<br>", unsafe_allow_html=True) 
+st.html("<h1 style='text-align: center; font-size:2rem'>Current Wait Times at <br> European Amusement Parks</h1>")
+st.html("<div style='text-align:center; font-size:0.7rem;'><a style='color:black; text-decoration:none' href='https://queue-times.com/'>Powered by Queue-Times.com</a></div>")
+st.html("<br>") 
 
 
 
@@ -126,7 +126,7 @@ selected_park_id = df_pn[df_pn["country_and_name"] == selected_park]["id"].value
 
 # Show only open attractions
 only_open_rides = st.checkbox("Show only open attractions", on_change=changeState)
-st.markdown("<br>", unsafe_allow_html=True) 
+st.html("<br>") 
 
 # Data refresh button. streamlit automatically rerenders by clicking therefore no additional action needed
 if st.button("Refresh waiting times"):
@@ -164,7 +164,7 @@ else:
 
 
     # Creating a bit of padding
-    st.markdown("<br>", unsafe_allow_html=True) 
+    st.html("<br>") 
 
     # Creating plots
     # fig #1
@@ -205,10 +205,11 @@ else:
 
 
     # fig #2
-    # Group by park area and sort each group by waiting time
-    df_grouped = df_wt[df_wt["Reported as open?"] == True].groupby('Park area').apply(
-        lambda x: x.sort_values('Waiting time (min)', ascending=True)
-        ).reset_index(drop=True)
+    # Sort within each park area. groupby().apply() drops "Park area" in pandas 3.
+    df_grouped = (
+        df_wt[df_wt["Reported as open?"] == True]
+        .sort_values(["Park area", "Waiting time (min)"], ascending=[True, True])
+    )
     
 
 
@@ -251,12 +252,13 @@ else:
 
 
 
-st.markdown("""
-            <div style='text-align:center; font-size:.6rem;padding-top:100px'>
-                <a style='color:black; text-decoration:none;' href='https://www.linkedin.com/in/julian-m-pflueger/' >
-                    <img src="https://content.linkedin.com/content/dam/me/business/en-us/amp/brand-site/v2/bg/LI-Bug.svg.original.svg" alt="Linkedin Button" with="10px" height="10px">
-                    <br>
-                    Julian
-                </a> 
-             </div>
-            """, unsafe_allow_html=True)
+st.html(
+    "<div style='text-align:center; font-size:.6rem; padding-top:100px'>"
+    "<a style='color:black; text-decoration:none;' href='https://www.linkedin.com/in/julian--pflueger/'>"
+    "<img src='https://content.linkedin.com/content/dam/me/business/en-us/amp/brand-site/v2/bg/LI-Bug.svg.original.svg' alt='LinkedIn' width='10' height='10'>"
+    "<br>Julian</a></div>"
+)
+
+_, impressum_col, _ = st.columns([1, 1, 1])
+with impressum_col:
+    st.link_button("Impressum", "https://julipsen.com/impressum", use_container_width=True)
